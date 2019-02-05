@@ -1,6 +1,7 @@
 const {
   GraphQLString,
   GraphQLInt,
+  GraphQLFloat,
   GraphQLList,
   GraphQLObjectType,
   GraphQLNonNull,
@@ -43,6 +44,19 @@ const Login = new GraphQLObjectType({
   })
 })
 
+const Products = new GraphQLList(
+  new GraphQLObjectType({
+    name: 'Products',
+    fields: () => ({
+      id: {type: new GraphQLNonNull(GraphQLString)},
+      image: {type: new GraphQLNonNull(GraphQLString)},
+      name: {type: new GraphQLNonNull(GraphQLString)},
+      type: {type: new GraphQLNonNull(GraphQLString)},
+      price: {type: new GraphQLNonNull(GraphQLFloat)}
+    })
+  })
+)
+
 const BlogQueryRootType = new GraphQLObjectType({
   name: 'BlogAppSchema',
   description: 'Blog Application Schema Query Root',
@@ -65,12 +79,22 @@ const BlogQueryRootType = new GraphQLObjectType({
         console.log(req.body, 'data')
         try {
           const user = await userServices.login(req.body)
-          console.log(user,"user");
+          console.log(user, 'user')
           if (user) {
             return user
           } else {
             throw new Error('Incorrect Email or password')
           }
+        } catch (error) {
+          throw new Error(error.message)
+        }
+      }
+    },
+    products: {
+      type: Products,
+      resolve: async () => {
+        try {
+          return await pizzaServices.getProducts()
         } catch (error) {
           throw new Error(error.message)
         }

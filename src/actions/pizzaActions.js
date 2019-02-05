@@ -1,6 +1,5 @@
 import {pizzaTypes} from './types'
 import {pizzaService} from '../services/pizzaService'
-import api from '../api/api'
 
 export const pizzaActions = {
   getProductsFromDB,
@@ -16,18 +15,14 @@ export const pizzaActions = {
 
 function getPizzasFromDB(numPage) {
   return dispatch => {
-    api
-      .getGraphqlRequestWithoutToken(
-        `?query={pizzas(numPage:${numPage}){pages,docs{id,type,image,composition,name}}}`
-      )
-      .then(
-        products => {
-          dispatch(getPizzasSuccess(products.data.pizzas))
-        },
-        error => {
-          dispatch(getProductsFailure())
-        }
-      )
+    pizzaService.getPizzasFromDB(numPage).then(
+      products => {
+        dispatch(getPizzasSuccess(products.data.pizzas))
+      },
+      error => {
+        dispatch(getProductsFailure())
+      }
+    )
   }
 
   function getPizzasSuccess(products) {
@@ -38,13 +33,11 @@ function getPizzasFromDB(numPage) {
   }
 }
 
-function getProductsFromDB(queryString) {
+function getProductsFromDB() {
   return dispatch => {
-    pizzaService.getProductsFromDB(queryString).then(
+    pizzaService.getProductsFromDB().then(
       products => {
-        // products.docs
-        // ? dispatch(getPizzasSuccess(products))
-        dispatch(getProductsSuccess(products))
+        dispatch(getProductsSuccess(products.data.products))
       },
       error => {
         dispatch(getProductsFailure())

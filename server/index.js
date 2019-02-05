@@ -21,16 +21,7 @@ app.use(
     }
   })
 )
-// app.get(
-//   '/graphql',
-//   graphqlHTTP(req => {
-//     // console.log(req,"req")
-//     return {
-//       schema: schema,
-//       graphiql: true
-//     }
-//   })
-// )
+
 
 const server = app.listen(4000, function() {
   console.log('Server listening on port ' + 4000)

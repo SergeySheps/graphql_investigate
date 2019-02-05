@@ -1,12 +1,16 @@
 import api from '../api/api'
-import {routs} from '../constants/constants'
 
 export const pizzaService = {
-  getProductsFromDB
+  getProductsFromDB,
+  getPizzasFromDB
 }
 
-function getProductsFromDB(queryString) {
-  return window.location.pathname === '/'
-    ? api.getRequestWithoutToken(routs.preview + (queryString ? queryString : ''))
-    : api.getRequestWithToken(routs.main + (queryString ? queryString : ''))
+function getProductsFromDB() {
+  return api.getGraphqlRequestWithoutToken(`?query={products{id,image,name,price,type}}`)
+}
+
+function getPizzasFromDB(numPage) {
+  return api.getGraphqlRequestWithoutToken(
+    `?query={pizzas(numPage:${numPage}){pages,docs{id,type,image,composition,name}}}`
+  )
 }
