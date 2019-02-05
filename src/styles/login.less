@@ -1,0 +1,56 @@
+@import "mixins.less";
+
+.login {
+    max-width: @width-content;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+
+    &__content {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    &__form {
+        &-item {
+            margin: 15px;
+            &-content {
+                margin: 5px 0;
+            }
+        }
+        &-buttons {
+            display: flex;
+            flex-flow: column nowrap;
+        }
+    }
+}
+
+.login__form-register{
+    margin-bottom: 15px;
+    &-description {
+        margin-right: 15px;
+    }
+}
+
+.login-header-text {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle
+}
+
+.ui.secondary.button.login-to-register-button {
+    background: rgb(115, 97, 197);
+}
+
+.ui.button, .ui.input{
+    width: 100%;
+}
+
+i.icon.link-to-home_icon {
+    margin: 15px;
+}
+
+
+

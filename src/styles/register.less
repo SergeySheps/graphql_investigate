@@ -1,0 +1,46 @@
+@import "mixins.less";
+
+.ui.label.warning-label {
+    color: red;
+    background-color: white ;
+    border: 1px solid red ;
+    line-height: 1.8;
+}
+
+.registration {
+    max-width: @width-content;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    &__content {
+        width: 100%;
+        max-width: 400px;
+    }
+    &__form {
+        &-item {
+            margin: 15px;
+            &-content {
+                margin: 5px 0;
+            }
+        }
+        &-buttons {
+            display: flex;
+            flex-flow: column nowrap;
+            &-item {
+                margin: 0.25em 0 0;
+            }
+        }
+    }
+}
+
+.registration-header-text {
+    display: inline-block;
+    margin: 0;
+    vertical-align: middle
+}
+.form-field-with-label{
+    display: flex;
+}

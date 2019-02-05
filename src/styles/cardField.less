@@ -1,0 +1,56 @@
+@import 'mixins.less';
+
+@margin-cards: 30px;
+
+.pizza-card-field {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  &__content {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    &-item.ui.card {
+      margin: @margin-cards;
+    }
+
+    &-item.ui.card > .image {
+      height: 180px;
+    }
+
+    &-item.ui.card:first-child {
+      margin: @margin-cards;
+    }
+
+    &-item.ui.card:last-child {
+      margin: @margin-cards;
+    }
+  }
+}
+
+.wrapper-loader-pizzas {
+  height: 300px;
+  position: relative;
+}
+
+.ui.form.card-radio-form {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin: 13px;
+}
+
+.card-radio-form-item.ui.label {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.card-radio-form_description {
+  margin-top: 10px;
+}
+
+.ui.pagination.secondary.pointing.menu {
+  margin-bottom: 30px;
+} 

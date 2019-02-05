@@ -1,0 +1,4 @@
+﻿{
+  "connectionDBString": "mongodb://Serega:qwe123@ds247223.mlab.com:47223/pizza_service",
+  "secretWord": "hello"
+}

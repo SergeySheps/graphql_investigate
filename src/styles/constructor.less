@@ -1,0 +1,76 @@
+@size-ingredient-image: 65px;
+.ingredient-list {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-flow: row wrap;
+  background: #fff;
+  &__ingredient {
+    display: flex;
+    list-style: none;
+    margin: 30px;
+    font-size: 18px;
+    &-text-info {
+      margin-left: 20px;
+    }
+    &_image {
+      width: @size-ingredient-image;
+      height: @size-ingredient-image;
+    }
+  }
+}
+
+.ui.checked.radio .label {
+  background: black!important;
+  color: white
+}
+.ui.radio .label {
+  &:hover {
+    cursor: pointer;
+    background: rgb(105, 119, 87)!important;
+  }
+}
+.pizza-constructor {
+  width: 100%;
+  &__content {
+    display: flex;
+
+    &-logging-price {
+      font-size: 15px;
+      margin: 40px 40px 0;
+    }
+    &-tab-panel {
+      flex: 500px 1 1;
+    }
+    &-total-price {
+      border-top: 1px solid black;
+      padding: 20px 0;
+    }
+  }
+  &_sizes {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.added-ingredients-list {
+  padding: 0;
+  margin: 10px 0 0;
+  &-item {
+    list-style: none;
+    padding: 10px;
+    border-top: 1px solid black;
+  }
+}
+
+.all-ingredients-list {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.button-add-inrgedient,
+.button-reduce-inrgedient {
+  &:hover {
+    cursor: pointer;
+  }
+}
