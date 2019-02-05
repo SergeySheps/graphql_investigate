@@ -19,7 +19,7 @@ function login(email, password) {
     })
     .then(
       user => {
-        const {token, ...userData} = user
+        const {token, ...userData} = user.data.login
         setLocalStorageItem('token', token)
         setLocalStorageItem('user', JSON.stringify(userData))
         return userData

@@ -90,7 +90,20 @@ function deleteOrderFromQueue(orderData) {
   return dispatch => {
     employeeService.deleteOrderFromQueue(orderData).then(
       deletedOrder => {
-        dispatch(deleteOrderFromQueueSuccess(deletedOrder))
+        if (deletedOrder.errors) {
+          toastrNotification(
+            'error',
+            {
+              title: 'Order',
+              message: deletedOrder.errors[0].message
+            },
+            {
+              position: 'bottom-right'
+            }
+          )
+        } else {
+          dispatch(deleteOrderFromQueueSuccess(deletedOrder.data.deleteOrder))
+        }
       },
       error => {
         toastrNotification('error', toastrNotificationData.deleteOrderFailure, {
@@ -150,10 +163,16 @@ function saveFinishTime(timeData) {
   return dispatch => {
     employeeService.saveFinishTime(timeData).then(
       time => {
-        dispatch(getStartTimeSuccess(time))
-        toastrNotification('success', toastrNotificationData.saveFinishTimeSuccess, {
-          position: 'bottom-right'
-        })
+        if (time.errors) {
+          toastrNotification('error', toastrNotificationData.saveFinishTimeFailure, {
+            position: 'bottom-right'
+          })
+        } else {
+          dispatch(getStartTimeSuccess(time.data.saveFinishTime))
+          toastrNotification('success', toastrNotificationData.saveFinishTimeSuccess, {
+            position: 'bottom-right'
+          })
+        }
       },
       error => {
         toastrNotification('error', toastrNotificationData.saveFinishTimeFailure, {

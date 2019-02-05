@@ -1,61 +1,16 @@
-const {
-  GraphQLString,
-  GraphQLInt,
-  GraphQLFloat,
-  GraphQLList,
-  GraphQLObjectType,
-  GraphQLNonNull,
-  GraphQLBoolean,
-  GraphQLSchema
-} = require('graphql')
+const {GraphQLInt, GraphQLObjectType, GraphQLSchema} = require('graphql')
 
 const pizzaServices = require('../services/pizzaServices')
 const userServices = require('../services/userServices')
-
-const Pizzas = new GraphQLObjectType({
-  name: 'Pizzas',
-  fields: () => ({
-    id: {type: new GraphQLNonNull(GraphQLString)},
-    type: {type: new GraphQLNonNull(GraphQLString)},
-    image: {type: new GraphQLNonNull(GraphQLString)},
-    composition: {type: new GraphQLNonNull(GraphQLString)},
-    name: {type: new GraphQLNonNull(GraphQLString)}
-  })
-})
-
-const PizzasPaginate = new GraphQLObjectType({
-  name: 'PizzasPaginate',
-  fields: () => ({
-    pages: {type: new GraphQLNonNull(GraphQLInt)},
-    docs: {type: new GraphQLList(Pizzas)}
-  })
-})
-
-const Login = new GraphQLObjectType({
-  name: 'Login',
-  fields: () => ({
-    _id: {type: new GraphQLNonNull(GraphQLString)},
-    firstName: {type: new GraphQLNonNull(GraphQLString)},
-    secondName: {type: new GraphQLNonNull(GraphQLString)},
-    isEmployee: {type: new GraphQLNonNull(GraphQLBoolean)},
-    email: {type: new GraphQLNonNull(GraphQLString)},
-    createdDate: {type: new GraphQLNonNull(GraphQLString)},
-    token: {type: new GraphQLNonNull(GraphQLString)}
-  })
-})
-
-const Products = new GraphQLList(
-  new GraphQLObjectType({
-    name: 'Products',
-    fields: () => ({
-      id: {type: new GraphQLNonNull(GraphQLString)},
-      image: {type: new GraphQLNonNull(GraphQLString)},
-      name: {type: new GraphQLNonNull(GraphQLString)},
-      type: {type: new GraphQLNonNull(GraphQLString)},
-      price: {type: new GraphQLNonNull(GraphQLFloat)}
-    })
-  })
-)
+const employeeServices = require('../services/employeeServices')
+const verifyToken = require('../helpers/verifyTokenGraphql')
+const {
+  Products,
+  Login,
+  PizzasPaginate,
+  DeleteOrder,
+  SaveFinishTime
+} = require('./customTypes')
 
 const BlogQueryRootType = new GraphQLObjectType({
   name: 'BlogAppSchema',
@@ -66,20 +21,17 @@ const BlogQueryRootType = new GraphQLObjectType({
       args: {numPage: {type: GraphQLInt}},
       resolve: async (parent, args) => {
         try {
-          const pizzas = await pizzaServices.getPizzaProducts(args.numPage)
-          return pizzas
+          return await pizzaServices.getPizzaProducts(args.numPage)
         } catch (error) {
-          return {errorMessage: error.message}
+          throw new Error(error.message)
         }
       }
     },
     login: {
       type: Login,
       resolve: async (parent, args, req) => {
-        console.log(req.body, 'data')
         try {
           const user = await userServices.login(req.body)
-          console.log(user, 'user')
           if (user) {
             return user
           } else {
@@ -99,18 +51,34 @@ const BlogQueryRootType = new GraphQLObjectType({
           throw new Error(error.message)
         }
       }
+    },
+    deleteOrder: {
+      type: DeleteOrder,
+      resolve: async (parent, args, req) => {
+        try {
+          verifyToken(req)
+          return await employeeServices.deleteOrderFromQueue(req.body)
+        } catch (error) {
+          throw new Error(error.message)
+        }
+      }
+    },
+    saveFinishTime: {
+      type: SaveFinishTime,
+      resolve: async (parent, args, req) => {
+        try {
+          verifyToken(req)
+          return await employeeServices.saveFinishTime(req.body)
+        } catch (error) {
+          throw new Error(error.message)
+        }
+      }
     }
   })
 })
 
 const BlogAppSchema = new GraphQLSchema({
   query: BlogQueryRootType
-  /* Если вам понадобиться создать или 
-       обновить данные, вы должны использовать
-       мутации. 
-       Мутации не будут изучены в этом посте.
-       mutation: BlogMutationRootType
-    */
 })
 
 module.exports = BlogAppSchema

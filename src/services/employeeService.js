@@ -31,7 +31,10 @@ function saveReadyOrder(orderData) {
 }
 
 function deleteOrderFromQueue(orderData) {
-  return api.deleteRequestWithToken(routs.cook, orderData)
+  return api.postGraphqlRequestWithToken({
+    query: `?query={deleteOrder{id,creationDate,email,isCompleted,isInProgress,orderAcceptor,totalPrice,userData{apartmentNumber,houseNumber,street,tel}}}`,
+    body: orderData
+  })
 }
 
 function getCookedOrdersHistory(email) {
@@ -43,7 +46,10 @@ function saveStartTime(timeData) {
 }
 
 function saveFinishTime(timeData) {
-  return api.putRequestWithToken(routs.cook + `?isSaveFinishWorkTime=true`, timeData)
+  return api.postGraphqlRequestWithToken({
+    query: `?query={saveFinishTime{id,finishTime,email,startTime,timeSinceStartWork,todaysDate}}`,
+    body: timeData
+  })
 }
 
 function getStartTime(email) {

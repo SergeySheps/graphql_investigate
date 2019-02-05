@@ -87,21 +87,6 @@ const deleteRequestWithToken = (url, data) => {
   return fetch(url, requestOptions).then(handleResponse)
 }
 
-const graphqlRequestWithToken = (requestType, data) => {
-  const requestOptions = {
-    method: requestType,
-    headers: {
-      'Content-Type': 'application/json',
-      'x-access-token': getLocalStorageItem('token')
-    },
-    body: JSON.stringify(data.body)
-  }
-  return fetch(
-    `${apiConfig}/graphql${data.query ? data.query : ''}`,
-    requestOptions
-  ).then(res => res.json())
-}
-
 const getGraphqlRequestWithoutToken = query => {
   const requestOptions = {
     method: 'GET',
@@ -115,6 +100,21 @@ const getGraphqlRequestWithoutToken = query => {
   )
 }
 
+const postGraphqlRequestWithToken = data => {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': getLocalStorageItem('token')
+    },
+    body: JSON.stringify(data.body)
+  }
+
+  return fetch(`${apiConfig.apiUrl}/graphql${data.query}`, requestOptions).then(res =>
+    res.json()
+  )
+}
+
 const postGraphqlRequestWithoutToken = data => {
   const requestOptions = {
     method: 'POST',
@@ -124,7 +124,9 @@ const postGraphqlRequestWithoutToken = data => {
     body: JSON.stringify(data.body)
   }
 
-  return fetch(`${apiConfig.apiUrl}/graphql${data.query}`, requestOptions).then(res => res.json())
+  return fetch(`${apiConfig.apiUrl}/graphql${data.query}`, requestOptions).then(res =>
+    res.json()
+  )
 }
 
 export default {
@@ -135,5 +137,6 @@ export default {
   putRequestWithToken,
   deleteRequestWithToken,
   postGraphqlRequestWithoutToken,
-  getGraphqlRequestWithoutToken
+  getGraphqlRequestWithoutToken,
+  postGraphqlRequestWithToken
 }

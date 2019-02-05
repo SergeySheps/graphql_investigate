@@ -14,14 +14,12 @@ app.use('/', router)
 app.use(
   '/graphql',
   graphqlHTTP({
-    schema: schema,
+    schema,
     formatError: err => {
-      console.log(err, 'err')
       return {message: err.message, statusCode: 401}
     }
   })
 )
-
 
 const server = app.listen(4000, function() {
   console.log('Server listening on port ' + 4000)
